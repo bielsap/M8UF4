@@ -1,59 +1,77 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
-    pageEncoding="UTF-8"%>
+	pageEncoding="UTF-8"%>
+<%@ page import="m8.uf4.Cancion"%>
+
+<%@ page import="java.sql.Connection"%>
+<%@ page import="java.sql.DriverManager"%>
+<%@ page import="java.sql.ResultSet"%>
+<%@ page import="java.sql.PreparedStatement"%>
+
 <!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
 <html>
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
 <title>Insert title here</title>
-<script language="">
- $(".del").click(function (event) {
-     event.preventDefault();
-     alert($(this).attr('href'));
-  });
-</script>
+<link rel="stylesheet" href="./css/styles.css">
 </head>
 <body>
-<% %>
-<!-- login -->
-<div class="esquerra">
-	<div class="menu_esq">
-	<h4>Géneres</h4>
-		<li><a href="#pop">Pop</a></li><br>
-		<li><a href="#rock">Rock</a></li><br>
-		<li><a href="#folk">Folk</a></li><br>
-		<li><a href="#jazz">Jazz</a></li><br>
-	</div>
-</div>
+	<div class="contenido">
+		<div class="cabecera">
+			<h1 class="titulo">MusicLists</h1>
+			<!-- img -->
+		</div>
 
-<div class="mprincipal">
-	<h1>Llista de cançons</h1>
-	<div class="musica">
-		<ul>
-			<li >1
-				<audio controls>
-					<source src="http://cobrar-deudas.com/M9-Isaac/musica/altamira.mp3" type="audio/mpeg">
-				</audio>
-			</li>
-			<li>2
-				<audio controls src="http://cobrar-deudas.com/M9-Isaac/musica/elangeldelaguarda.mp3"></audio>
-			</li>
-			<li>3
-				<audio controls src="http://cobrar-deudas.com/M9-Isaac/musica/elmejorhotel.mp3"></audio>
-			</li>
-			<li>4
-				<audio controls src="http://cobrar-deudas.com/M9-Isaac/musica/elviejo.mp3"></audio>
-			</li>
-			<li>5
-				<audio controls src="http://cobrar-deudas.com/M9-Isaac/musica/nubesnegrasdirecto.mp3"></audio>
-			</li>
-			<li>6
-				<audio controls src="http://cobrar-deudas.com/M9-Isaac/musica/nubesnegrasdirecto.mp3"></audio>
-			</li>
-			<li>7
-				<audio controls src=http://cobrar-deudas.com/M9-Isaac/musica/stylo.mp3></audio>
-			</li>		
-		</ul>
+		<!-- login -->
+		<div class="login">
+			<nav> <a href="./login">Login</a> <a href="./registrar">Alta</a> </nav>
+		</div>
+		<!-- menu esquerra -->
+		<div class="esquerra">
+			<div class="menu_esq">
+				<h4>Géneres</h4>
+				<li><a href="#pop">Pop</a></li> <br />
+				<li><a href="#rock">Rock</a></li> <br />
+				<li><a href="#folk">Folk</a></li> <br />
+				<li><a href="#jazz">Jazz</a></li> <br />
+			</div>
+		</div>
+
+		<div class="mprincipal">
+			<h1>Lista de canciones</h1>
+			<div class="musica">
+				<%
+					try {
+						Class.forName("com.mysql.jdbc.Driver");
+						Connection conexion = DriverManager.getConnection("jdbc:mysql://localhost/musiclists", "root", "mysql");
+						PreparedStatement ps = null;
+						if (!conexion.isClosed()) {
+							ps = conexion.prepareStatement("select * from canciones");
+							ResultSet result = ps.executeQuery();
+
+							out.println(
+									"<table border= \"1\"<tr><th>Titulo</th><th>Artista</th><th>Genero</th><th>Enlace</th></tr>");
+
+							while (result.next()) {
+								out.println("<tr>");
+								out.println("<td>" + result.getObject("titulo") + "</td>");
+								out.println("<td>" + result.getObject("artista") + "</td>");
+								out.println("<td>" + result.getObject("genero") + "</td>");
+								out.println("<td><a href=\"" + result.getObject("url") + "\">" + result.getObject("titulo")
+										+ "</a>" + "</td>");
+								out.println("</tr>");
+
+							}
+							out.println("</table>");
+						} else {
+							out.println("Error de conexión");
+						}
+					} catch (Exception e) {
+						out.println("Exception" + e);
+						e.printStackTrace();
+					}
+				%>
+			</div>
+		</div>
 	</div>
-</div>
 </body>
 </html>

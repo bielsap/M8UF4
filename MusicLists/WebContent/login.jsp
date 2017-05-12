@@ -9,13 +9,12 @@
 </head>
 <body>
 
-<h1>P41</h1>
-<p>Formulari de validació amb JSP</p>
+	<h1>Identifícate</h1>
 
 	<form method="post" action="validacion.jsp">
 		<center>
 			<fieldset>
-				<legend><h1>Log in!</h1></legend>
+				<legend> Log in! </legend>
 				<table>
 					<tr>
 						<td class="labels"><label>Username</label></td>

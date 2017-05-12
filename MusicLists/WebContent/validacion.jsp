@@ -12,8 +12,8 @@
         String username = request.getParameter("username");   
         String password = request.getParameter("password");
         Class.forName("com.mysql.jdbc.Driver");  // MySQL database connection   
-        Connection conn = DriverManager.getConnection("jdbc:mysql://localhost:3306/Pt41", "root","mysql");
-        PreparedStatement pst = conn.prepareStatement("Select user,pass from login where user=? and pass=?");
+        Connection conn = DriverManager.getConnection("jdbc:mysql://localhost:3306/musiclists", "root","mysql");
+        PreparedStatement pst = conn.prepareStatement("Select id,usuari,pass from usuarios where usuari=? and pass=?");
         pst.setString(1, username);
         pst.setString(2, password);
         ResultSet rs = pst.executeQuery();                        
@@ -23,12 +23,11 @@
         	if(username.equals("admin")) {
         		String redirectURL = "./admin";
                 response.sendRedirect(redirectURL);
-        	} else if (!username.isEmpty()){
+        	} else if (!username.isEmpty()){ 
         		String redirectURL = "./usuarios";
                 response.sendRedirect(redirectURL);
-        	} else {
-        		String redirectURL = "./principal";
         	}
+        	session.setAttribute("id", rs.getObject("id"));
         }
                   
         else {
